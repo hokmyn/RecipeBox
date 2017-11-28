@@ -1,1 +1,1 @@
-# RecipeBox
+# FreeCodeCamp's project RecipeBox
