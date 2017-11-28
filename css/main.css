@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  text-align: center;  
+  font-family: "Helvetica   Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+}
+h1 {
+  margin-bottom: 20px;
+  margin-top: 10px
+}
+#container {
+  background-color: #ACACAC;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: 20px;
+  text-align: left;
+  padding: 20px;
+  border-radius: 10px
+}
+#container .title {  
+  color: #fff;
+  background-color: #129D17;
+  cursor: pointer;
+  user-select: none;
+  text-transform: uppercase;
+  padding: 10px;
+  margin-top: 10px
+}
+#container .items {
+  display: none;
+  margin: 0;
+  padding: 10px;
+}
+.items h3, .items p {
+  margin-bottom: 10px
+}
+.items p {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 4px
+}
+.items p:nth-child(even) {
+  background-color: #D1E6E7
+}
+#container .title:hover {
+  opacity: 0.8;
+}
+.addButton {
+  margin-top: 10px;
+  width: 120px;
+  padding: 5px;  
+  border-radius: 5px;
+  border: none;  
+  background: linear-gradient(to bottom, #6db3f2 0%, #1e69de 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 );
+  transition: .3s;
+}
+.addButton:hover {
+  opacity: .7;
+}
+.addButton:active {
+  background: linear-gradient(to bottom, #1e69de 0%, #6db3f2 100%);
+}
+a {
+  display: inline-block;
+  width: 100px;  
+  padding: 5px;
+  border-radius: 8px;
+  text-align: center;
+  user-select: none;
+  text-decoration: none;
+  color: #000;
+  font-size: bold;
+  cursor: pointer;
+}
+.editButton {
+  margin-right: 10px;
+  background: linear-gradient(to bottom, #82b1ff 0%,#1e69de 100%);
+  transition: .3s;
+}
+.editButton:hover {
+  opacity: .7;
+}
+.editButton:active {
+  background: linear-gradient(to bottom, #1e69de 0%, #82b1ff 100%);
+}
+.delButton {
+  background: linear-gradient(to bottom, #ff1744 0%,#C11135 100%);
+  transition: .3s;
+}
+.delButton:hover {
+  opacity: .7;
+}
+.delButton:active {
+  background: linear-gradient(to bottom, #C11135 0%,#ff1744 100%);
+}
+.modalWrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;  
+  display: none;
+  z-index: 1000;
+  background-color: rgba(0,0,0,.5);
+}
+.modalDialog {
+  width: 600px;
+  margin: 60px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px
+}
+.modalDialog span {
+  cursor: pointer;  
+}
+.modalDialog p {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-weight: bolder;
+  font-size: 16px;
+}
+.modalDialog span {
+  float: right;
+}
+.modalDialog h3 {
+  display: inline-block;
+}
+.modalDialog textarea {
+  display: block;
+  margin-bottom: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  width: 95%;
+}
+.modalDialog input {
+  width: 95%;
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid grey;
+}
+.modalDialog input:focus, .modalDialog textarea:focus {
+  background: #ffe;
+  border: 1px solid #29B0D9;
+}
+.modalDialog button {
+  padding: 5px;
+  width: 100px;
+  margin-right:10px;
+  border-radius: 5px;
+  background-color: #e0f2f1;
+}
