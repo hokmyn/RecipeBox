@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="application-name" content="Camper Leaderboard" />
+    <meta name="author" content="Denis Kalinin" />
+    <title>Camper Leaderboard</title>
+    <!-- stylesheets -->    
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <!-- Javascript -->
+    <script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
+  <script type="text/babel">
+    let prevId;
+class Recipes extends React.Component {
+  constructor(props) {
+    super(props);
+    let recipeBox = (localStorage.getItem("recipeBox") !== null) ? JSON.parse(localStorage.getItem("recipeBox")) : [{"title":"Pasta Carbonara!!!","ingredients":["Pasta","Bacon","Egg","Onions"]},{"title":"Pizza","ingredients":["Phone","Pizza company number","Patience","Money"]},{"title":"Irish Coffee","ingredients":["Coffee","Whisky"]}];
+    this.state = {
+      recipes: recipeBox,
+      modalTitle: '',
+      modalIngrs: '',
+      curIndex: '',
+      isEdit: true
+    }
+    
+    this.changeIngrs = this.changeIngrs.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
+    this.showAddModal = this.showAddModal.bind(this);    
+    this.saveChanges = this.saveChanges.bind(this);
+  }  
+  
+  onClickTitle(e) {    
+    prevId =  (prevId || e.target.id);
+    if(prevId == e.target.id) {
+      $(e.target).next().slideToggle("slow");      
+    } else {      
+      $(`#${prevId}`).next().slideUp("slow");
+      $(e.target).next().slideDown("slow");
+      prevId = e.target.id;
+    }               
+  }
+  
+  showEditModal(index) {    
+    this.setState({
+      modalTitle: this.state.recipes[index].title,
+      modalIngrs: this.state.recipes[index].ingredients.join(),
+      curIndex: index,
+      isEdit: true
+    });    
+    $(".modalWrap").fadeIn("slow");
+  }
+  
+  showAddModal() {    
+    this.setState({
+      modalTitle: '',
+      modalIngrs: '',
+      isEdit: false
+    });    
+    $(".modalWrap").fadeIn("slow");    
+  }
+  
+  hideModal(e) {
+    if($(e.target).hasClass('modalWrap')  || $(e.target).hasClass('closeModal')) {      
+      $('.modalWrap').fadeOut("slow");
+    }
+  }
+  
+  changeTitle(e) {
+    this.setState({
+      modalTitle: e.target.value
+    });    
+  }
+  
+  changeIngrs(e) {
+    this.setState({
+      modalIngrs: e.target.value
+    });
+    
+  }
+  
+  delRecipe(index) {
+    this.state.recipes.splice(index, 1);
+    this.setState({
+      recipes: this.state.recipes
+    });
+    prevId = false;
+  }
+  
+  saveChanges() {
+    if(this.state.isEdit) {
+      if(this.state.modalTitle.trim() && this.state.modalIngrs.trim()) {
+        this.state.recipes[this.state.curIndex].title = this.state.modalTitle;      
+        this.state.recipes[this.state.curIndex].ingredients = this.state.modalIngrs.split(",").map((e) => { return e.trim(); });
+        this.setState({
+          recipes: this.state.recipes
+        });
+      }
+    } else {
+      this.setState({
+        recipes: this.state.recipes.concat([{title: this.state.modalTitle, ingredients: this.state.modalIngrs.split(",").map((e) => { return e.trim(); })}])
+      });
+    }    
+    $('.modalWrap').fadeOut("slow");
+  }
+  
+  render() {
+    localStorage.setItem("recipeBox", JSON.stringify(this.state.recipes));
+    let recipes = this.state.recipes.map((item, index) => {
+      let ingrItem = item.ingredients.map((item, index) => {
+        return (
+          <p key={index}>{item}</p>
+        );
+      });
+      
+      return(        
+        <div key={index}>
+          <div className="title" id={index} onClick={this.onClickTitle}>{item.title}</div>       
+          <div className='items'>
+            <h3>Ingredients</h3>
+            {ingrItem}
+            <a className='editButton' onClick={() => this.showEditModal(index)}>Edit</a>
+            <a className='delButton' onClick={(e) => this.delRecipe(index)}>Delete</a>
+          </div>
+         </div>
+      );
+    });
+    
+    return (
+      <div>
+        {recipes}
+        <a className="addButton" onClick={this.showAddModal}>Add recipe</a>        
+        <div className='modalWrap' onClick={this.hideModal}>
+        <div className="modalDialog">
+          <h3>{(this.state.isEdit) ? "Edit recipe" : "Add recipe"}</h3>
+          <span className='closeModal' onClick={this.hideModal}>x</span>
+          <p>Recipe</p>
+          <input type="text" value={this.state.modalTitle} placeholder="Enter recipe name" onChange={this.changeTitle} className="editTitle" />
+          <p>Ingredients</p>
+          <textarea className="editIngredients" placeholder="Enter ingredients separated by commas" onChange={this.changeIngrs} value={this.state.modalIngrs}></textarea>          
+          <button onClick={this.saveChanges}>Save</button>          
+        </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Recipes />,
+  document.getElementById('container')
+)
+  </script>
+</body>
+</html>
